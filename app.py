@@ -75,9 +75,9 @@ if df_PDR is not None:
 
         # Susun ulang kolom sesuai dengan urutan yang diinginkan
         desired_order = [
-            'NO ', 'ID', 'ID PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
+            'NO ', 'ID', 'ID PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
             'JML PINJAMAN', 'OUTSTANDING', 'J WAKTU', 'RATE    ', 'ANGSURAN', 'TUJUAN PINJAMAN', 
-            'PINJ KE', 'NAMA F O ', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
+            'PINJ KE', 'NAMA F O ', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
         ]
 
         # Pastikan semua kolom ada, jika tidak, tambahkan kolom kosong
