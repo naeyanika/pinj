@@ -52,7 +52,7 @@ if df_PDR is not None:
         st.write(df_PDR.columns.tolist())
 
         # Cek apakah kolom 'JML.PINJAMAN' ada di DataFrame
-        numeric_columns = ['JML PINJAMAN', 'OUTSTANDING', 'ANGSURAN']
+        numeric_columns = ['JML PINJAMAN', 'OUTSTANDING', 'ANGSURAN']
         for col in numeric_columns:
             if col in df_PDR.columns:
                 df_PDR[col] = df_PDR[col].apply(format_number)
@@ -76,7 +76,7 @@ if df_PDR is not None:
         # Susun ulang kolom sesuai dengan urutan yang diinginkan
         desired_order = [
             'NO ', 'ID', 'ID PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
-            'JML PINJAMAN', 'OUTSTANDING', 'J WAKTU', 'RATE    ', 'ANGSURAN', 'TUJUAN PINJAMAN', 
+            'JML PINJAMAN', 'OUTSTANDING', 'J WAKTU', 'RATE    ', 'ANGSURAN', 'TUJUAN PINJAMAN', 
             'PINJ KE', 'NAMA F O ', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
         ]
 
