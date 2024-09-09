@@ -45,7 +45,7 @@ if uploaded_files:
 if df_PDR is not None:
     try:
         # Bersihkan spesial karakter pada kolom header
-        df_PDR.columns = df_PDR.columns.str.strip().str.replace(r'[^\w\s]', ' ', regex=True)
+        df_PDR.columns = df_PDR.columns.str.strip().str.replace(r'[^\w\s]', ' ', '   ', regex=True)
         
         # Debugging: Print out the available column names to check if 'JML.PINJAMAN' exists
         st.write("Kolom yang tersedia di df_PDR:")
@@ -75,9 +75,9 @@ if df_PDR is not None:
 
         # Susun ulang kolom sesuai dengan urutan yang diinginkan
         desired_order = [
-            'NO', 'ID', 'IDPINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
-            'JMLPINJAMAN', 'OUTSTANDING', 'JWAKTU', 'RATE ', 'ANGSURAN', 'TUJUAN PINJAMAN', 
-            'PINJKE', 'NAMA FO', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
+            'NO ', 'ID', 'ID PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
+            'JMLPINJAMAN', 'OUTSTANDING', 'J WAKTU', 'RATE    ', 'ANGSURAN', 'TUJUAN PINJAMAN', 
+            'PINJ KE', 'NAMA F O', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
         ]
 
         # Pastikan semua kolom ada, jika tidak, tambahkan kolom kosong
