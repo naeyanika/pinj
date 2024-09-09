@@ -45,14 +45,27 @@ if uploaded_files:
 if df_PDR is not None:
     try:
         # Bersihkan spesial karakter pada kolom header
-        df_PDR.columns = df_PDR.columns.str.strip().str.replace(r'[^\w\s]', ' ', regex=True)
+        df_PDR.columns = df_PDR.columns.str.strip().str.replace(r'[^\w\s]', '', regex=True)
+        
+        # Function to clean special characters in the DataFrame
+        def clean_special_chars(df):
+            for col in df.columns:
+                if df[col].dtype == 'object':  # Only apply this to string columns
+                    # Replace non-breaking spaces and other special characters with normal space
+                    df[col] = df[col].str.replace(r'\s+', ' ', regex=True).str.strip()
+                    # Replace any non-word characters (including special characters) with nothing
+                    df[col] = df[col].str.replace(r'[^\w\s]', '', regex=True)
+            return df
+
+        # Apply cleaning function to df_PDR (remove special characters from all columns)
+        df_PDR = clean_special_chars(df_PDR)
         
         # Debugging: Print out the available column names to check if 'JML.PINJAMAN' exists
         st.write("Kolom yang tersedia di df_PDR:")
         st.write(df_PDR.columns.tolist())
 
         # Cek apakah kolom 'JML.PINJAMAN' ada di DataFrame
-        numeric_columns = ['JML PINJAMAN', 'OUTSTANDING', 'ANGSURAN']
+        numeric_columns = ['JMLPINJAMAN', 'OUTSTANDING', 'ANGSURAN']  # Cleaned version of column names
         for col in numeric_columns:
             if col in df_PDR.columns:
                 df_PDR[col] = df_PDR[col].apply(format_number)
@@ -60,8 +73,8 @@ if df_PDR is not None:
                 st.warning(f"Kolom '{col}' tidak ditemukan di Pinjaman Detail Report.xlsx")
 
         # Format kolom RATE (%)
-        if 'RATE    ' in df_PDR.columns:
-            df_PDR['RATE    '] = df_PDR['RATE    '].apply(format_percentage)
+        if 'RATE' in df_PDR.columns:
+            df_PDR['RATE'] = df_PDR['RATE'].apply(format_percentage)
         else:
             st.warning("Kolom 'RATE (%)' tidak ditemukan di Pinjaman Detail Report.xlsx")
 
@@ -75,9 +88,9 @@ if df_PDR is not None:
 
         # Susun ulang kolom sesuai dengan urutan yang diinginkan
         desired_order = [
-            'NO ', 'ID', 'ID PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
-            'JML PINJAMAN', 'OUTSTANDING', 'J WAKTU', 'RATE    ', 'ANGSURAN', 'TUJUAN PINJAMAN', 
-            'PINJ KE', 'NAMA F O ', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
+            'NO', 'ID', 'IDPINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
+            'JMLPINJAMAN', 'OUTSTANDING', 'JWAKTU', 'RATE', 'ANGSURAN', 'TUJUAN PINJAMAN', 
+            'PINJKE', 'NAMA FO', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
         ]
 
         # Pastikan semua kolom ada, jika tidak, tambahkan kolom kosong
@@ -90,42 +103,43 @@ if df_PDR is not None:
         st.write('Pinjaman Detail Report:')
         st.dataframe(df_PDR)
 
-        # Filter PU
-        df_filter_pu = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN UMUM'].copy()
-        st.write("Filter PU")
-        st.write(df_filter_pu)
-
-        # Filter PMB
-        df_filter_pmb = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN MIKROBISNIS'].copy()
-        st.write("Filter PMB")
-        st.write(df_filter_pmb)
-
-        # Filter PPD
-        df_filter_ppd = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN DT. PENDIDIKAN'].copy()
-        st.write("Filter PPD")
-        st.write(df_filter_ppd)
-
-        # Filter PSA
-        df_filter_psa = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN SANITASI'].copy()
-        st.write("Filter PSA")
-        st.write(df_filter_psa)
-
-        # Filter ARTA
-        df_filter_arta = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN ARTA'].copy()
-        st.write("Filter ARTA")
-        st.write(df_filter_arta)
-
-        # Filter PRR
-        df_filter_prr = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN RENOVASI RUMAH'].copy()
-        st.write("Filter PRR")
-        st.write(df_filter_prr)
-
-        # Filter PTN
-        df_filter_ptn = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN PERTANIAN'].copy()
-        st.write("Filter PTN")
-        st.write(df_filter_ptn)
-
     except Exception as e:
         st.error(f"Terjadi kesalahan saat memproses data: {str(e)}")
 else:
     st.warning("Silakan upload file 'Pinjaman Detail Report.xlsx' dan 'pivot_simpanan.xlsx'")
+
+
+        # Filter PU
+    df_filter_pu = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN UMUM'].copy()
+    st.write("Filter PU")
+    st.write(df_filter_pu)
+
+        # Filter PMB
+    df_filter_pmb = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN MIKROBISNIS'].copy()
+    st.write("Filter PMB")
+    st.write(df_filter_pmb)
+
+        # Filter PPD
+    df_filter_ppd = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN DT. PENDIDIKAN'].copy()
+    st.write("Filter PPD")
+    st.write(df_filter_ppd)
+
+        # Filter PSA
+    df_filter_psa = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN SANITASI'].copy()
+    st.write("Filter PSA")
+    st.write(df_filter_psa)
+
+        # Filter ARTA
+    df_filter_arta = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN ARTA'].copy()
+    st.write("Filter ARTA")
+    st.write(df_filter_arta)
+
+        # Filter PRR
+    df_filter_prr = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN RENOVASI RUMAH'].copy()
+    st.write("Filter PRR")
+    st.write(df_filter_prr)
+
+        # Filter PTN
+    df_filter_ptn = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN PERTANIAN'].copy()
+    st.write("Filter PTN")
+    st.write(df_filter_ptn)
