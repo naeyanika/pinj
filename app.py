@@ -61,7 +61,7 @@ if df_PDR is not None:
         df_PDR = df_PDR.apply(lambda x: x.astype(str).str.strip().str.replace(r'[^\w\s]', '', regex=True))
 
         # Rapikan file df_pdr
-        df_PDR['DUMMY'] = df_PDR['ID ANGGOTA'] + '' + df_PDR['PENCAIRAN']
+        df_PDR['DUMMY'] = df_PDR['ID'] + '' + df_PDR['PENCAIRAN']
 
         rename_dict = {
             'PINJAMAN MIKRO BISNIS': 'PINJAMAN MIKROBISNIS',
