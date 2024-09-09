@@ -30,9 +30,6 @@ def format_date(value):
 # File uploader
 uploaded_files = st.file_uploader("Unggah file Excel", accept_multiple_files=True, type=["xlsx"])
 
-df_PDR = None
-df_S = None
-
 if uploaded_files:
     for file in uploaded_files:
         if file.name == 'Pinjaman Detail Report.xlsx':
@@ -47,35 +44,43 @@ if uploaded_files:
 
 if df_PDR is not None:
     try:
-        # Bersihkan spesial karakter
+        # Bersihkan spesial karakter pada kolom header
         df_PDR.columns = df_PDR.columns.str.strip().str.replace(r'[^\w\s]', '', regex=True)
         
-        # Rapikan file df_pdr
-        df_PDR['DUMMY'] = df_PDR['ID'].astype(str) + df_PDR['PENCAIRAN'].astype(str)
+        # Debugging: Print out the available column names to check if 'JML.PINJAMAN' exists
+        st.write("Kolom yang tersedia di df_PDR:")
+        st.write(df_PDR.columns.tolist())
 
-        rename_dict = {
-            'PINJAMAN MIKRO BISNIS': 'PINJAMAN MIKROBISNIS',
-        }
-        df_PDR['PRODUK'] = df_PDR['PRODUK'].replace(rename_dict)
-
-        # Format kolom
+        # Cek apakah kolom 'JML.PINJAMAN' ada di DataFrame
         numeric_columns = ['JML.PINJAMAN', 'OUTSTANDING', 'ANGSURAN']
         for col in numeric_columns:
-            df_PDR[col] = df_PDR[col].apply(format_number)
+            if col in df_PDR.columns:
+                df_PDR[col] = df_PDR[col].apply(format_number)
+            else:
+                st.warning(f"Kolom '{col}' tidak ditemukan di Pinjaman Detail Report.xlsx")
 
-        df_PDR['RATE (%)'] = df_PDR['RATE (%)'].apply(format_percentage)
-        
+        # Format kolom RATE (%)
+        if 'RATE (%)' in df_PDR.columns:
+            df_PDR['RATE (%)'] = df_PDR['RATE (%)'].apply(format_percentage)
+        else:
+            st.warning("Kolom 'RATE (%)' tidak ditemukan di Pinjaman Detail Report.xlsx")
+
+        # Format kolom tanggal
         date_columns = ['PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN']
         for col in date_columns:
-            df_PDR[col] = df_PDR[col].apply(format_date)
+            if col in df_PDR.columns:
+                df_PDR[col] = df_PDR[col].apply(format_date)
+            else:
+                st.warning(f"Kolom '{col}' tidak ditemukan di Pinjaman Detail Report.xlsx")
 
-        # Ensure all expected columns are present
+        # Susun ulang kolom sesuai dengan urutan yang diinginkan
         desired_order = [
             'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
             'JML.PINJAMAN', 'OUTSTANDING', 'J.WAKTU', 'RATE (%)', 'ANGSURAN', 'TUJUAN PINJAMAN', 
             'PINJ.KE', 'NAMA F.O.', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
         ]
 
+        # Pastikan semua kolom ada, jika tidak, tambahkan kolom kosong
         for col in desired_order:
             if col not in df_PDR.columns:
                 df_PDR[col] = ''
