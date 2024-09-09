@@ -61,12 +61,12 @@ if df_PDR is not None:
         df_PDR = df_PDR.apply(lambda x: x.astype(str).str.strip().str.replace(r'[^\w\s]', '', regex=True))
 
         # Rapikan file df_pdr
-        df_PDR['DUMMY'] = df_PDR['ID'] + '' + df_PDR['PENCAIRAN']
+        df_PDR['DUMMY'] = df_PDR['ID ANGGOTA'] + '' + df_PDR['PENCAIRAN']
 
         rename_dict = {
             'PINJAMAN MIKRO BISNIS': 'PINJAMAN MIKROBISNIS',
         }
-        df_PDR['PRODUK'] = df_PDR['PRODUK'].replace(rename_dict)
+        df_PDR['JENIS PINJAMAN'] = df_PDR['JENIS PINJAMAN'].replace(rename_dict)
 
         desired_order = [
             'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
@@ -77,6 +77,19 @@ if df_PDR is not None:
         for col in desired_order:
             if col not in df_PDR.columns:
                 df_PDR[col] = ''
+
+        # Konversi kolom numerik
+        numeric_columns = ['NO.', 'JML.PINJAMAN', 'J.WAKTU', 'RATE (%)', 'PINJ.KE']
+        for col in numeric_columns:
+            df_PDR[col] = pd.to_numeric(df_PDR[col], errors='coerce')
+
+        # Isi nilai yang hilang dengan 0 atau string kosong sesuai tipe data
+        df_PDR = df_PDR.fillna({col: 0 if col in numeric_columns else '' for col in df_PDR.columns})
+
+        # Format ulang beberapa kolom
+        df_PDR['NO.'] = df_PDR['NO.'].apply(format_no)
+        df_PDR['CENTER'] = df_PDR['CENTER'].apply(format_center)
+        df_PDR['GROUP'] = df_PDR['GROUP'].apply(format_kelompok)
 
         df_PDR = df_PDR[desired_order]
 
