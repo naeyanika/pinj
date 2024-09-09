@@ -79,22 +79,36 @@ if df_PDR is not None:
                 df_PDR[col] = ''
 
         # Konversi kolom numerik
-        numeric_columns = ['NO.', 'JML.PINJAMAN', 'J.WAKTU', 'RATE (%)', 'PINJ.KE']
+        numeric_columns = ['JML.PINJAMAN', 'OUTSTANDING', 'J.WAKTU', 'RATE (%)', 'ANGSURAN', 'PINJ.KE']
         for col in numeric_columns:
             df_PDR[col] = pd.to_numeric(df_PDR[col], errors='coerce')
 
-        # Isi nilai yang hilang dengan 0 atau string kosong sesuai tipe data
-        df_PDR = df_PDR.fillna({col: 0 if col in numeric_columns else '' for col in df_PDR.columns})
+        # Format kolom uang
+        money_columns = ['JML.PINJAMAN', 'OUTSTANDING', 'ANGSURAN']
+        for col in money_columns:
+            df_PDR[col] = df_PDR[col].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else '')
 
-        # Format ulang beberapa kolom
-        df_PDR['NO.'] = df_PDR['NO.'].apply(format_no)
-        df_PDR['CENTER'] = df_PDR['CENTER'].apply(format_center)
-        df_PDR['GROUP'] = df_PDR['GROUP'].apply(format_kelompok)
+        # Format kolom tanggal
+        date_columns = ['PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN']
+        for col in date_columns:
+            df_PDR[col] = pd.to_datetime(df_PDR[col], errors='coerce').dt.strftime('%d/%m/%Y')
+
+        # Format kolom lainnya
+        df_PDR['J.WAKTU'] = df_PDR['J.WAKTU'].fillna(0).astype(int)
+        df_PDR['RATE (%)'] = df_PDR['RATE (%)'].apply(lambda x: f"{x:.2f}" if pd.notnull(x) else '')
+        df_PDR['PINJ.KE'] = df_PDR['PINJ.KE'].fillna(0).astype(int)
 
         df_PDR = df_PDR[desired_order]
 
+        # Tampilkan DataFrame
         st.write('Pinjaman Detail Report:')
-        st.write(df_PDR)
+        st.dataframe(df_PDR.style.format({
+            'NO.': '{:.0f}',
+            'CENTER': '{:.0f}',
+            'GROUP': '{:.0f}',
+            'J.WAKTU': '{:.0f}',
+            'PINJ.KE': '{:.0f}'
+        }))
 
         # Filter PU
         df_filter_pu = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN UMUM'].copy()
