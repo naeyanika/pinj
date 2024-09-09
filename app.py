@@ -52,7 +52,7 @@ if df_PDR is not None:
         st.write(df_PDR.columns.tolist())
 
         # Cek apakah kolom 'JML.PINJAMAN' ada di DataFrame
-        numeric_columns = ['JML.PINJAMAN', 'OUTSTANDING', 'ANGSURAN']
+        numeric_columns = ['JMLPINJAMAN', 'OUTSTANDING', 'ANGSURAN']
         for col in numeric_columns:
             if col in df_PDR.columns:
                 df_PDR[col] = df_PDR[col].apply(format_number)
@@ -60,8 +60,8 @@ if df_PDR is not None:
                 st.warning(f"Kolom '{col}' tidak ditemukan di Pinjaman Detail Report.xlsx")
 
         # Format kolom RATE (%)
-        if 'RATE (%)' in df_PDR.columns:
-            df_PDR['RATE (%)'] = df_PDR['RATE (%)'].apply(format_percentage)
+        if 'RATE ' in df_PDR.columns:
+            df_PDR['RATE '] = df_PDR['RATE '].apply(format_percentage)
         else:
             st.warning("Kolom 'RATE (%)' tidak ditemukan di Pinjaman Detail Report.xlsx")
 
@@ -75,9 +75,9 @@ if df_PDR is not None:
 
         # Susun ulang kolom sesuai dengan urutan yang diinginkan
         desired_order = [
-            'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
-            'JML.PINJAMAN', 'OUTSTANDING', 'J.WAKTU', 'RATE (%)', 'ANGSURAN', 'TUJUAN PINJAMAN', 
-            'PINJ.KE', 'NAMA F.O.', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
+            'NO.', 'ID', 'IDPINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
+            'JMLPINJAMAN', 'OUTSTANDING', 'JWAKTU', 'RATE ', 'ANGSURAN', 'TUJUAN PINJAMAN', 
+            'PINJKE', 'NAMA FO', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
         ]
 
         # Pastikan semua kolom ada, jika tidak, tambahkan kolom kosong
