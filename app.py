@@ -45,7 +45,7 @@ if uploaded_files:
 if df_PDR is not None:
     try:
         # Bersihkan spesial karakter pada kolom header
-        df_PDR.columns = df_PDR.columns.str.strip().str.replace(r'[^\w\s]', '', regex=True)
+        df_PDR.columns = df_PDR.columns.str.strip().str.replace(r'[^\w\s]', ' ', regex=True)
         
         # Debugging: Print out the available column names to check if 'JML.PINJAMAN' exists
         st.write("Kolom yang tersedia di df_PDR:")
