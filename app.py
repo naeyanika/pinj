@@ -52,7 +52,7 @@ if df_PDR is not None:
         st.write(df_PDR.columns.tolist())
 
         # Cek apakah kolom 'JML.PINJAMAN' ada di DataFrame
-        numeric_columns = ['JMLPINJAMAN', 'OUTSTANDING', 'ANGSURAN']
+        numeric_columns = ['JML PINJAMAN', 'OUTSTANDING', 'ANGSURAN']
         for col in numeric_columns:
             if col in df_PDR.columns:
                 df_PDR[col] = df_PDR[col].apply(format_number)
@@ -60,8 +60,8 @@ if df_PDR is not None:
                 st.warning(f"Kolom '{col}' tidak ditemukan di Pinjaman Detail Report.xlsx")
 
         # Format kolom RATE (%)
-        if 'RATE ' in df_PDR.columns:
-            df_PDR['RATE '] = df_PDR['RATE '].apply(format_percentage)
+        if 'RATE    ' in df_PDR.columns:
+            df_PDR['RATE    '] = df_PDR['RATE    '].apply(format_percentage)
         else:
             st.warning("Kolom 'RATE (%)' tidak ditemukan di Pinjaman Detail Report.xlsx")
 
