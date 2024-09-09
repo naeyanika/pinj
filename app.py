@@ -66,7 +66,7 @@ if df_PDR is not None:
         rename_dict = {
             'PINJAMAN MIKRO BISNIS': 'PINJAMAN MIKROBISNIS',
         }
-        df_PDR['JENIS PINJAMAN'] = df_PDR['JENIS PINJAMAN'].replace(rename_dict)
+        df_PDR['PRODUK'] = df_PDR['PRODUK'].replace(rename_dict)
 
         desired_order = [
             'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
