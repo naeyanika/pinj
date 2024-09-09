@@ -73,8 +73,8 @@ if df_PDR is not None:
                 st.warning(f"Kolom '{col}' tidak ditemukan di Pinjaman Detail Report.xlsx")
 
         # Format kolom RATE (%)
-        if 'RATE' in df_PDR.columns:
-            df_PDR['RATE'] = df_PDR['RATE'].apply(format_percentage)
+        if 'RATE ' in df_PDR.columns:
+            df_PDR['RATE '] = df_PDR['RATE '].apply(format_percentage)
         else:
             st.warning("Kolom 'RATE (%)' tidak ditemukan di Pinjaman Detail Report.xlsx")
 
