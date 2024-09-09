@@ -6,35 +6,26 @@ import io
 st.title('Aplikasi Filter Pinjaman Sanitasi dan Plafon Pinjaman Ke-')
 st.write("File yang dibutuhkan: Daftar Pinjaman dan pivot_simpanan.xlsx")
 st.write("Ubah Nama File dan nama Sheet jadi Pinjaman Detail Report")
-st.write("Rapihkan data tersebut jadi seperti contoh ini: https://drive.google.com/file/d/14Ofz53dSVRFzlFrrc8snZmmkHq7CO-R2/view?usp=drive_link")
+st.write("Rapihkan data tersebut jadi seperti contoh ini: [Link ke contoh]")
 
 # Function to format numbers
-def format_no(no):
+def format_number(value):
     try:
-        if pd.notna(no):
-            return f'{int(no):02d}.'
-        else:
-            return ''
-    except (ValueError, TypeError):
-        return str(no)
+        return f"{float(value):,.0f}"
+    except:
+        return value
 
-def format_center(center):
+def format_percentage(value):
     try:
-        if pd.notna(center):
-            return f'{int(center):03d}'
-        else:
-            return ''
-    except (ValueError, TypeError):
-        return str(center)
+        return f"{float(value):.2f}%"
+    except:
+        return value
 
-def format_kelompok(kelompok):
+def format_date(value):
     try:
-        if pd.notna(kelompok):
-            return f'{int(kelompok):02d}'
-        else:
-            return ''
-    except (ValueError, TypeError):
-        return str(kelompok)
+        return pd.to_datetime(value).strftime('%d/%m/%Y')
+    except:
+        return value
 
 # File uploader
 uploaded_files = st.file_uploader("Unggah file Excel", accept_multiple_files=True, type=["xlsx"])
@@ -58,16 +49,27 @@ if df_PDR is not None:
     try:
         # Bersihkan spesial karakter
         df_PDR.columns = df_PDR.columns.str.strip().str.replace(r'[^\w\s]', '', regex=True)
-        df_PDR = df_PDR.apply(lambda x: x.astype(str).str.strip().str.replace(r'[^\w\s]', '', regex=True))
-
+        
         # Rapikan file df_pdr
-        df_PDR['DUMMY'] = df_PDR['ID'] + '' + df_PDR['PENCAIRAN']
+        df_PDR['DUMMY'] = df_PDR['ID'].astype(str) + df_PDR['PENCAIRAN'].astype(str)
 
         rename_dict = {
             'PINJAMAN MIKRO BISNIS': 'PINJAMAN MIKROBISNIS',
         }
         df_PDR['PRODUK'] = df_PDR['PRODUK'].replace(rename_dict)
 
+        # Format kolom
+        numeric_columns = ['JML.PINJAMAN', 'OUTSTANDING', 'ANGSURAN']
+        for col in numeric_columns:
+            df_PDR[col] = df_PDR[col].apply(format_number)
+
+        df_PDR['RATE (%)'] = df_PDR['RATE (%)'].apply(format_percentage)
+        
+        date_columns = ['PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN']
+        for col in date_columns:
+            df_PDR[col] = df_PDR[col].apply(format_date)
+
+        # Ensure all expected columns are present
         desired_order = [
             'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
             'JML.PINJAMAN', 'OUTSTANDING', 'J.WAKTU', 'RATE (%)', 'ANGSURAN', 'TUJUAN PINJAMAN', 
@@ -78,37 +80,10 @@ if df_PDR is not None:
             if col not in df_PDR.columns:
                 df_PDR[col] = ''
 
-        # Konversi kolom numerik
-        numeric_columns = ['JML.PINJAMAN', 'OUTSTANDING', 'J.WAKTU', 'RATE (%)', 'ANGSURAN', 'PINJ.KE']
-        for col in numeric_columns:
-            df_PDR[col] = pd.to_numeric(df_PDR[col], errors='coerce')
-
-        # Format kolom uang
-        money_columns = ['JML.PINJAMAN', 'OUTSTANDING', 'ANGSURAN']
-        for col in money_columns:
-            df_PDR[col] = df_PDR[col].apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else '')
-
-        # Format kolom tanggal
-        date_columns = ['PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN']
-        for col in date_columns:
-            df_PDR[col] = pd.to_datetime(df_PDR[col], errors='coerce').dt.strftime('%d/%m/%Y')
-
-        # Format kolom lainnya
-        df_PDR['J.WAKTU'] = df_PDR['J.WAKTU'].fillna(0).astype(int)
-        df_PDR['RATE (%)'] = df_PDR['RATE (%)'].apply(lambda x: f"{x:.2f}" if pd.notnull(x) else '')
-        df_PDR['PINJ.KE'] = df_PDR['PINJ.KE'].fillna(0).astype(int)
-
         df_PDR = df_PDR[desired_order]
 
-        # Tampilkan DataFrame
         st.write('Pinjaman Detail Report:')
-        st.dataframe(df_PDR.style.format({
-            'NO.': '{:.0f}',
-            'CENTER': '{:.0f}',
-            'GROUP': '{:.0f}',
-            'J.WAKTU': '{:.0f}',
-            'PINJ.KE': '{:.0f}'
-        }))
+        st.dataframe(df_PDR)
 
         # Filter PU
         df_filter_pu = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN UMUM'].copy()
