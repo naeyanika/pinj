@@ -5,10 +5,10 @@ import pyarrow as pa
 import io
 
 st.title('Aplikasi Filter Pinjaman Sanitasi dan Plafon Pinjaman Ke-')
-st.write("File yang dibutuhkan: Daftar Pinjaman dan pivot_simpanan.xlsx")
-st.write("Ubah Nama File dan nama Sheet jadi Pinjaman Detail Report")
-st.write("Rapihkan data tersebut jadi seperti contoh ini: [Link ke contoh]")
-st.write("Hapus karakter spesial terlebih dahulu pada file excel nya")
+st.write("""File yang dibutuhkan: Daftar Pinjaman dan pivot_simpanan.xlsx""")
+st.write("""Ubah Nama File dan nama Sheet jadi Pinjaman Detail Report""")
+st.write("""Rapihkan data tersebut jadi seperti contoh ini: https://drive.google.com/file/d/14Ofz53dSVRFzlFrrc8snZmmkHq7CO-R2/view?usp=drive_link""")
+st.write("""Hapus karakter spesial terlebih dahulu pada file excel nya, lengkapnya ada disini tutorialnya : https://drive.google.com/file/d/1xABUwrMatieKFsNeUbOWl2KuDh6BVLwy/view?usp=drive_link """)
 
 ## FUNGSI FORMAT NOMOR
 def format_no(no):
@@ -87,7 +87,7 @@ if uploaded_files:
         st.dataframe(df_PDR) 
 
 #------------------------ SIMPANAN ------------------------------#
-    st.write("transaksi simpanan:")
+    st.write("Transaksi Simpanan:")
     st.write(df_S)
 #------------------ Proses Filter
     # Filter PU
