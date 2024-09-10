@@ -86,7 +86,9 @@ if uploaded_files:
         st.write('Pinjaman Detail Report:')
         st.dataframe(df_PDR) 
 
-
+#------------------------ SIMPANAN ------------------------------#
+    st.write("transaksi simpanan:")
+    st.write(df_S)
 #------------------ Proses Filter
 
  # Filter PU
@@ -285,7 +287,6 @@ if uploaded_files:
 
     st.write("Anomali PTN:")
     st.write(df_filter_ptn)
-
 
 
 
