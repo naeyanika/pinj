@@ -366,10 +366,12 @@ if uploaded_files:
 
     #Kriteria Nabung Sukarela 25%
     df_psa_merge['Pencairan Sanitasi x 25%'] = df_psa_merge['JML.PINJAMAN'] * 0.25
-    df_psa_merge['Sukarela Sesuai'] = df_psa_merge.apply(lambda row: row['Db Sukarela'] >= row['Pencairan Sanitasi x 25%'], axis=1)
     #--Kriteria jika tujuan pinjaman "AIR", mengahislkan TRUE
-    df_psa_merge['Sukarela Sesuai'] = df_psa_merge.apply(lambda row: True if 'AIR' in row['TUJUAN PINJAMAN'] else row['Db Sukarela'] >= row['Pencairan Sanitasi x 25%'],axis=1)
-    
+    df_psa_merge['Sukarela Sesuai'] = df_psa_merge.apply(lambda row: 
+    True if 'AIR' in str(row['TUJUAN PINJAMAN']).upper() 
+    else row['Db Sukarela'] >= row['Pencairan Sanitasi x 25%'], 
+    axis=1)
+
     #Pengecekkan Wajib
     df_psa_merge['Pencairan Sanitasi x 1%'] = df_psa_merge['JML.PINJAMAN'] * 0.01    
     df_psa_merge['Wajib Sesuai'] = df_psa_merge.apply(lambda row: row['Db Wajib'] < row['Pencairan Sanitasi x 1%'], axis=1)
@@ -390,9 +392,10 @@ if uploaded_files:
          'CENTER_df_S':'CENTER'    
     }
     df_psa_merge = df_psa_merge.rename(columns=rename_dict)
-    
+
     st.write("Anomali PSA:")
     st.write(df_psa_merge)
+
 
 
 else:
