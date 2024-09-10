@@ -251,30 +251,38 @@ st.write(df_filter_arta)
 
 #----------------------------------------- PERTANIAN --------------------------------#
 desired_order = [
-    'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'CENTER', 'GROUP', 'PRODUK', 'JML.PINJAMAN','J.WAKTU', 'NAMA F.O.', 'PINJ.KE', 'J.WAKTU', 'TUJUAN PINJAMAN'
-    ]
+    'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'CENTER', 'GROUP', 'PRODUK', 
+    'JML.PINJAMAN', 'J.WAKTU', 'NAMA F.O.', 'PINJ.KE', 'TUJUAN PINJAMAN'
+]
 
 for col in desired_order:
     if col not in df_filter_ptn.columns:
         df_filter_ptn[col] = ''
 
-df_filter_ptn = df_filter_ptn[desired_order]
-
 #Buat Kriteria Pertanian 
 def check_pertanian_criteria(row):
-    if 500000 <= row['JML.PINJAMAN'] <= 10000000:
-        if row['TUJUAN PINJAMAN'] == 'PERTANIAN PADI' and row['J.WAKTU'] == 25:
-            return True
-        elif row['TUJUAN PINJAMAN'] == 'PERTANIAN SAYURAN' and row['J.WAKTU'] == 16:
-            return True
-        elif row['TUJUAN PINJAMAN'] == 'PERTANIAN PALAWIJA' and row['J.WAKTU'] == 33:
-            return True
-        else:
-            return False
-    else:
-        return False
+    try:
+        jml_pinjaman = float(row['JML.PINJAMAN'].replace(',', ''))
+        j_waktu = int(row['J.WAKTU'])
+        
+        if 500000 <= jml_pinjaman <= 10000000:
+            if row['TUJUAN PINJAMAN'] == 'PERTANIAN PADI' and j_waktu == 25:
+                return True
+            elif row['TUJUAN PINJAMAN'] == 'PERTANIAN SAYURAN' and j_waktu == 16:
+                return True
+            elif row['TUJUAN PINJAMAN'] == 'PERTANIAN PALAWIJA' and j_waktu == 33:
+                return True
+    except ValueError:
+        pass
+    return False
 
+# Terapkan fungsi ini pada DataFrame
 df_filter_ptn['CEK KRITERIA'] = df_filter_ptn.apply(check_pertanian_criteria, axis=1)
 
+# Urutkan kolom sesuai desired_order dan tambahkan kolom 'CEK KRITERIA' di akhir
+final_order = desired_order + ['CEK KRITERIA']
+df_filter_ptn = df_filter_ptn.reindex(columns=final_order)
+
+# Tampilkan hasil
 st.write("Anomali PTN:")
-st.write(df_filter_ptn)
+st.dataframe(df_filter_ptn)
