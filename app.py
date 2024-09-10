@@ -56,14 +56,12 @@ if uploaded_files:
         st.error("File 'pivot_simpanan.xlsx' tidak ditemukan. Mohon upload file yang benar.")
 
     ## SESI PENAMBAHAN DUMMY
-    df_PDR['PENGAJUAN']
     df_PDR['DUMMY'] = df_PDR['ID'].astype(str) + '' + df_PDR['PENCAIRAN'].astype(str)
     df_PDR['CENTER'] = df_PDR['CENTER'].astype(str).str[:3]
     df_PDR['PHONE'] = df_PDR['PHONE'].astype(str).apply(lambda x: '0' + x if not x.startswith('0') else x)
     
-    df_PDR['PENGAJUAN'] = pd.to_datetime(df['PENGAJUAN']).dt.strftime('%d/%m/%Y')
-    df_PDR['PENCAIRAN'] = pd.to_datetime(df['PENCAIRAN']).dt.strftime('%d/%m/%Y')
-    df_PDR['PEMBAYARAN'] = pd.to_datetime(df['PEMBAYARAN']).dt.strftime('%d/%m/%Y')
+    for col in ['PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN']:
+        df_PDR[col] = pd.to_datetime(df_PDR[col]).dt.strftime('%d/%m/%Y')
 
     rename_dict = {
         'PINJAMAN MIKRO BISNIS': 'PINJAMAN MIKROBISNIS'
