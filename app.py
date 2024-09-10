@@ -288,6 +288,43 @@ if uploaded_files:
     st.write("Anomali PTN:")
     st.write(df_filter_ptn)
 
+#---------------------- PRR -----------------------#
+    desired_order = [
+        'NO.','ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'CENTER', 'GROUP', 'PRODUK', 
+        'JML.PINJAMAN', 'J.WAKTU', 'NAMA F.O.'
+        ]
+
+    for col in desired_order:
+            if col not in df_filter_prr.columns:
+                df_filter_prr[col] = ''
+
+#Buat Kriteria Renovasi Rumah 
+    def check_criteria(row):
+            if row['PRODUK'] == 'PINJAMAN RENOVASI RUMAH':
+                if 3000000 <= row['JML.PINJAMAN'] <= 30000000:
+                    return True
+                else:
+                    return False
+            else:
+                return False
+    
+    df_filter_prr['CEK KRITERIA'] = df_filter_prr.apply(check_criteria, axis=1)
+#---Merge df_S dan PRR
+    merge_column = 'DUMMY'
+    # Kriteria Nabung 25% pada pencairan renovasi rumah.
+    df_prr_merge = pd.merge(df_filter_prr, df_S, on=merge_column, suffixes=('_df_S','_df_filter_prr'))
+    # Sukarela
+    df_prr_merge['Pencairan Renovasi Rumah x 25%'] = df_prr_merge['JML.PINJAMAN'] * 0.25
+    df_prr_merge['Sukarela Sesuai'] = df_prr_merge.apply(lambda row: row['Db Sukarela'] >= row['Pencairan Renovasi Rumah x 25%'], axis=1)
+    # Wajib
+    df_prr_merge['Pencairan Renovasi Rumah x 1%'] = df_prr_merge['JML.PINJAMAN'] * 0.01    
+    df_prr_merge['Wajib Sesuai'] = df_prr_merge.apply(lambda row: row['Db Wajib'] < row['Pencairan Renovasi Rumah x 1%'], axis=1)
+    # Penisun
+    df_prr_merge['Pencairan Renovasi Rumah x 1% Pensiun'] = df_prr_merge['JML.PINJAMAN'] * 0.01
+    df_prr_merge['Pensiun Sesuai'] = df_prr_merge.apply(lambda row: row['Db Pensiun'] < row['Pencairan Renovasi Rumah x 1% Pensiun'], axis=1)
+
+    st.write("Anomali PRR:")
+    st.write(df_prr_merge)
 
 
 else:
