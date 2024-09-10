@@ -396,7 +396,26 @@ if uploaded_files:
     st.write("Anomali PSA:")
     st.write(df_psa_merge)
 
-
+#---------- Download links for all files
+    for name, df in {
+            'Anomali PU.xlsx': df_filter_pu,
+            'Anomali PMB.xlsx': df_filter_pmb,
+            'Anomali DTP.xlsx': df_filter_ppd,
+            'Anomali PSA.xlsx': df_psa_merge,
+            'Anomali ARTA.xlsx': df_filter_arta,
+            'Anomali PRR.xlsx': df_prr_merge,
+            'Anomali PTN.xlsx' : df_filter_ptn
+        }.items():
+        buffer = io.BytesIO()
+        with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+            df.to_excel(writer, index=False, sheet_name='Sheet1')
+        buffer.seek(0)
+        st.download_button(
+            label=f"Unduh {name}",
+            data=buffer.getvalue(),
+            file_name=name,
+            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            )
 
 else:
     st.warning("Silakan upload file 'Pinjaman Detail Report.xlsx' dan 'pivot_simpanan.xlsx'")
