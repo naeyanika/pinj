@@ -165,3 +165,22 @@ df_filter_pu['CEK KRITERIA'] = df_filter_pu.apply(check_criteria, axis=1)
 
 st.write("Anomali PU")
 st.write(df_filter_pu)
+
+
+#Buat Kriteria PMB
+def check_criteria(row):
+    if row['PRODUK'] == 'PINJAMAN MIKROBSINIS':
+        if row['PINJ.KE'] == 1 and 1 <= row['JML.PINJAMAN'] <= 15000000:
+            return True
+        elif row['PINJ.KE'] >= 2 and 1 <= row['JML.PINJAMAN'] <= 30000000:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+# Tambahkan Kolom Untuk Cek Kriteria
+df_filter_pmb['CEK KRITERIA'] = df_filter_pmb.apply(check_criteria, axis=1)
+
+st.write("Anomali PMB")
+st.write(df_filter_pmb)
