@@ -80,10 +80,6 @@ if uploaded_files:
 
     df_PDR = df_PDR[desired_order]
 
-        
-    for col in ['PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN']:
-        df_PDR[col] = pd.to_datetime(df_PDR[col]).dt.strftime('%d/%m/%Y')
-        
     st.write('Pinjaman Detail Report:')
     st.dataframe(df_PDR)
 
