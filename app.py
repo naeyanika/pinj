@@ -90,41 +90,26 @@ if uploaded_files:
     st.write("transaksi simpanan:")
     st.write(df_S)
 #------------------ Proses Filter
-
- # Filter PU
+    # Filter PU
     df_filter_pu = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN UMUM'].copy()
-    st.write("Filter PU")
-    st.write(df_filter_pu)
 
-        # Filter PMB
+    # Filter PMB
     df_filter_pmb = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN MIKROBISNIS'].copy()
-    st.write("Filter PMB")
-    st.write(df_filter_pmb)
 
-        # Filter PPD
+    # Filter PPD
     df_filter_ppd = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN DT. PENDIDIKAN'].copy()
-    st.write("Filter PPD")
-    st.write(df_filter_ppd)
 
-        # Filter PSA
+    # Filter PSA
     df_filter_psa = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN SANITASI'].copy()
-    st.write("Filter PSA")
-    st.write(df_filter_psa)
 
-        # Filter ARTA
+    # Filter ARTA
     df_filter_arta = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN ARTA'].copy()
-    st.write("Filter ARTA")
-    st.write(df_filter_arta)
 
-        # Filter PRR
+    # Filter PRR
     df_filter_prr = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN RENOVASI RUMAH'].copy()
-    st.write("Filter PRR")
-    st.write(df_filter_prr)
 
-        # Filter PTN
+    # Filter PTN
     df_filter_ptn = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN PERTANIAN'].copy()
-    st.write("Filter PTN")
-    st.write(df_filter_ptn)
 
 #----------------- ANOMALI
 
