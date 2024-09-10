@@ -128,9 +128,9 @@ if uploaded_files:
     st.write("Filter PTN")
     st.write(df_filter_ptn)
 
+#----------------- ANOMALI
 
-
-# PU
+#---------------------------------- PU -------------------------------------------#
 desired_order = [
     'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'CENTER', 'GROUP', 'PRODUK', 'JML.PINJAMAN','J.WAKTU', 'NAMA F.O.', 'PINJ.KE'
     ]
@@ -141,6 +141,7 @@ for col in desired_order:
 
 df_filter_pu = df_filter_pu[desired_order]
 
+#Buat Kriteria PU
 def check_criteria(row):
     if row['PRODUK'] == 'PINJAMAN UMUM':
         if row['PINJ.KE'] == 1 and 1 <= row['JML.PINJAMAN'] <= 3000000:
@@ -165,6 +166,7 @@ df_filter_pu['CEK KRITERIA'] = df_filter_pu.apply(check_criteria, axis=1)
 
 st.write("Anomali PU")
 st.write(df_filter_pu)
+
 
 #----------------------------------------- PMB ---------------------------------------#
 
