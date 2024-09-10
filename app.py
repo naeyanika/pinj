@@ -59,6 +59,11 @@ if uploaded_files:
     df_PDR['DUMMY'] = df_PDR['ID'].astype(str) + '' + df_PDR['PENCAIRAN'].astype(str)
     df_PDR['CENTER'] = df_PDR['CENTER'].astype(str).str[:3]
     df_PDR['PHONE'] = df_PDR['PHONE'].astype(str).apply(lambda x: '0' + x if not x.startswith('0') else x)
+    rename_dict = {
+        'PINJAMAN MIKRO BISNIS': 'PINJAMAN MIKROBISNIS'
+    }
+
+    df_PDR['PRODUK'] = df_PDR['PRODUK'].replace(rename_dict)
 
     desired_order = [
                 'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
