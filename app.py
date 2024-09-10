@@ -56,30 +56,26 @@ if uploaded_files:
         st.error("File 'pivot_simpanan.xlsx' tidak ditemukan. Mohon upload file yang benar.")
 
     ## SESI PENAMBAHAN DUMMY
-    if df_PDR is not None:
-        try:
-            df_PDR['DUMMY'] = df_PDR['ID'].astype(str) + '' + df_PDR['PENCAIRAN'].astype(str)
-            df_PDR['CENTER'] = df_PDR['CENTER'].astype(str).str[:3]
-            df_PDR['PHONE'] = df_PDR['PHONE'].astype(str).apply(lambda x: '0' + x if not x.startswith('0') else x)
+    df_PDR['DUMMY'] = df_PDR['ID'].astype(str) + '' + df_PDR['PENCAIRAN'].astype(str)
+    df_PDR['CENTER'] = df_PDR['CENTER'].astype(str).str[:3]
+    df_PDR['PHONE'] = df_PDR['PHONE'].astype(str).apply(lambda x: '0' + x if not x.startswith('0') else x)
 
-            desired_order = [
+    desired_order = [
                 'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
                 'JML.PINJAMAN', 'OUTSTANDING', 'J.WAKTU', 'RATE (%)', 'ANGSURAN', 'TUJUAN PINJAMAN', 
                 'PINJ. KE', 'NAMA F.O.', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
-            ]
+    ]
 
-            for col in desired_order:
-                if col not in df_PDR.columns:
-                    df_PDR[col] = ''
+    for col in desired_order:
+        if col not in df_PDR.columns:
+            df_PDR[col] = ''
 
-            df_PDR = df_PDR[desired_order]
+    df_PDR = df_PDR[desired_order]
 
-            st.write('Pinjaman Detail Report:')
-            st.dataframe(df_PDR)
+    st.write('Pinjaman Detail Report:')
+    st.dataframe(df_PDR)
 
-        except Exception as e:
-            st.error(f"Terjadi kesalahan saat memproses data: {str(e)}")
-else:
+
     st.warning("Silakan upload file 'Pinjaman Detail Report.xlsx' dan 'pivot_simpanan.xlsx'")
 
 
