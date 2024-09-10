@@ -80,6 +80,10 @@ if uploaded_files:
 
     df_PDR = df_PDR[desired_order]
 
+    df_PDR['PENGAJUAN'] = pd.to_datetime(df_PDR['PENGAJUAN'], format='%d%m%Y').dt.strftime('%d/%m/%Y')
+    df_PDR['PENCAIRAN'] = pd.to_datetime(df_PDR['PENCAIRAN'], format='%d%m%Y').dt.strftime('%d/%m/%Y')
+    df_PDR['PEMBAYARAN'] = pd.to_datetime(df_PDR['PEMBAYARAN'], format='%d%m%Y').dt.strftime('%d/%m/%Y')
+
     st.write('Pinjaman Detail Report:')
     st.dataframe(df_PDR)
 
