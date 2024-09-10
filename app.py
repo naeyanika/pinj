@@ -58,40 +58,39 @@ if uploaded_files:
     else:
     ## SESI PENAMBAHAN DUMMY
         for col in ['PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN']:
-            df_PDR[col] = pd.to_datetime(df_PDR[col]).dt.strftime('%d%m%Y')
-            df_PDR['DUMMY'] = df_PDR['ID'].astype(str) + '' + df_PDR['PENGAJUAN']
-            df_PDR['CENTER'] = df_PDR['CENTER'].astype(str).str[:3]
-            df_PDR['PHONE'] = df_PDR['PHONE'].astype(str).apply(lambda x: '0' + x if not x.startswith('0') else x)
+                    df_PDR[col] = pd.to_datetime(df_PDR[col]).dt.strftime('%d%m%Y')
+                    df_PDR['DUMMY'] = df_PDR['ID'].astype(str) + '' + df_PDR['PENGAJUAN']
+                    df_PDR['CENTER'] = df_PDR['CENTER'].astype(str).str[:3]
+                    df_PDR['PHONE'] = df_PDR['PHONE'].astype(str).apply(lambda x: '0' + x if not x.startswith('0') else x)
 
-            rename_dict = {
-            'PINJAMAN MIKRO BISNIS': 'PINJAMAN MIKROBISNIS'
-            }
+                    rename_dict = {
+                    'PINJAMAN MIKRO BISNIS': 'PINJAMAN MIKROBISNIS'
+                    }
 
-            df_PDR['PRODUK'] = df_PDR['PRODUK'].replace(rename_dict)
+                    df_PDR['PRODUK'] = df_PDR['PRODUK'].replace(rename_dict)
 
-            desired_order = [
-                'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 
-                'JML.PINJAMAN', 'OUTSTANDING', 'J.WAKTU', 'RATE (%)', 'ANGSURAN', 'TUJUAN PINJAMAN', 
-                'PINJ.KE', 'NAMA F.O.', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
-            ]
+                    desired_order = [
+                    'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'PHONE', 'CENTER', 'GROUP', 'PRODUK', 'JML.PINJAMAN', 'OUTSTANDING', 'J.WAKTU', 'RATE (%)', 'ANGSURAN', 'TUJUAN PINJAMAN', 'PINJ.KE', 'NAMA F.O.', 'PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN'
+                    ]
 
-            for col in desired_order:
-                if col not in df_PDR.columns:
-                    df_PDR[col] = ''
+        for col in desired_order:
+            if col not in df_PDR.columns:
+                df_PDR[col] = ''
 
-            df_PDR = df_PDR[desired_order]
+                df_PDR = df_PDR[desired_order]
 
-            df_PDR['PENGAJUAN'] = pd.to_datetime(df_PDR['PENGAJUAN'], format='%d%m%Y').dt.strftime('%d/%m/%Y')
-            df_PDR['PENCAIRAN'] = pd.to_datetime(df_PDR['PENCAIRAN'], format='%d%m%Y').dt.strftime('%d/%m/%Y')
-            df_PDR['PEMBAYARAN'] = pd.to_datetime(df_PDR['PEMBAYARAN'], format='%d%m%Y').dt.strftime('%d/%m/%Y')
+                df_PDR['PENGAJUAN'] = pd.to_datetime(df_PDR['PENGAJUAN'], format='%d%m%Y').dt.strftime('%d/%m/%Y')
+                df_PDR['PENCAIRAN'] = pd.to_datetime(df_PDR['PENCAIRAN'], format='%d%m%Y').dt.strftime('%d/%m/%Y')
+                df_PDR['PEMBAYARAN'] = pd.to_datetime(df_PDR['PEMBAYARAN'], format='%d%m%Y').dt.strftime('%d/%m/%Y')
 
-            st.write('Pinjaman Detail Report:')
-            st.dataframe(df_PDR)
+                st.write('Pinjaman Detail Report:')
+                st.dataframe(df_PDR)
 
 
 else:
     st.warning("Silakan upload file 'Pinjaman Detail Report.xlsx' dan 'pivot_simpanan.xlsx'")
-    st.stop() 
+    st.stop()  
+
 
 
 #------------------ Proses Filter
