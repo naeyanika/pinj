@@ -57,12 +57,14 @@ if uploaded_files:
 
     ## SESI PENAMBAHAN DUMMY
     for col in ['PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN']:
-        df_PDR[col] = pd.to_datetime(df_PDR[col]).dt.strftime('%d/%m/%Y')
-        
-    df_PDR['DUMMY'] = df_PDR['ID'].astype(str) + '' + df_PDR['PENCAIRAN'].astype(str)
+        df_PDR[col] = pd.to_datetime(df_PDR[col]).dt.strftime('%d%m%Y')
+    df_PDR['DUMMY'] = df_PDR['ID'].astype(str) + '' + df_PDR['PENGAJUAN']
+
     df_PDR['CENTER'] = df_PDR['CENTER'].astype(str).str[:3]
     df_PDR['PHONE'] = df_PDR['PHONE'].astype(str).apply(lambda x: '0' + x if not x.startswith('0') else x)
     
+    for col in ['PENGAJUAN', 'PENCAIRAN', 'PEMBAYARAN']:
+        df_PDR[col] = pd.to_datetime(df_PDR[col]).dt.strftime('%d/%m/%Y')
 
     rename_dict = {
         'PINJAMAN MIKRO BISNIS': 'PINJAMAN MIKROBISNIS'
