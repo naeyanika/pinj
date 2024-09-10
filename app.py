@@ -259,7 +259,7 @@ for col in desired_order:
 
 
 #Buat Kriteria Pertanian 
-def check_criteria(row):
+def check_pertanian_criteria(row):
     if 500000 <= row['JML.PINJAMAN'] <= 10000000:
         if row['TUJUAN PINJAMAN'] == 'PERTANIAN PADI' and row['J.WAKTU'] == 25:
             return True
@@ -271,8 +271,10 @@ def check_criteria(row):
             return False
     else:
         return False
-    
-df_filter_arta['CEK KRITERIA'] = df_filter_arta.apply(check_criteria, axis=1)
 
-st.write("Anomali Pertanian:")
+# Terapkan fungsi ini pada DataFrame
+df_filter_ptn['CEK KRITERIA'] = df_filter_ptn.apply(check_pertanian_criteria, axis=1)
+
+# Tampilkan hasil
+st.write("Anomali Pinjaman Pertanian")
 st.write(df_filter_ptn)
