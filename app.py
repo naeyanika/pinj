@@ -323,6 +323,19 @@ if uploaded_files:
     df_prr_merge['Pencairan Renovasi Rumah x 1% Pensiun'] = df_prr_merge['JML.PINJAMAN'] * 0.01
     df_prr_merge['Pensiun Sesuai'] = df_prr_merge.apply(lambda row: row['Db Pensiun'] < row['Pencairan Renovasi Rumah x 1% Pensiun'], axis=1)
 
+    desired_order = [
+        'NO.', 'ID', 'ID.PINJAMAN', 'NAMA LENGKAP', 'CENTER_df_S', 'GROUP', 'JML.PINJAMAN', 'SL', 'TRANS. DATE', 'CEK KRITERIA', 'Pencairan Renovasi Rumah x 25%', 'Db Sukarela', 'Sukarela Sesuai', 'Pencairan Renovasi Rumah x 1%', 'Db Wajib', 'Wajib Sesuai', 'Pencairan Renovasi Rumah x 1% Pensiun', 'Db Pensiun', 'Pensiun Sesuai' 
+    ]
+    for col in desired_order:
+        if col not in df_prr_merge.columns:
+            df_prr_merge[col] = ''
+
+    result = result[desired_order]
+    
+    rename_dict = {
+         'CENTER_df_S':'CENTER'    
+    }
+    
     st.write("Anomali PRR:")
     st.write(df_prr_merge)
 
