@@ -160,8 +160,8 @@ def check_criteria(row):
     else:
         return False
 
-# Apply the function to each row
-df_filter_pu['Criteria_Check'] = df_filter_pu.apply(check_criteria, axis=1)
+# Tambahkan Kolom Untuk Cek Kriteria
+df_filter_pu['Cek Kriteria'] = df_filter_pu.apply(check_criteria, axis=1)
 
 st.write("Anomali PU")
 st.write(df_filter_pu)
