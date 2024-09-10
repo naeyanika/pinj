@@ -182,7 +182,7 @@ df_filter_pmb = df_filter_pmb[desired_order]
 
 #Buat Kriteria PMB
 def check_criteria(row):
-    if row['PRODUK'] == 'PINJAMAN MIKROBSINIS':
+    if row['PRODUK'] == 'PINJAMAN MIKROBISNIS':
         if row['PINJ.KE'] == 1 and 1 <= row['JML.PINJAMAN'] <= 15000000:
             return True
         elif row['PINJ.KE'] >= 2 and 1 <= row['JML.PINJAMAN'] <= 30000000:
