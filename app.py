@@ -127,3 +127,41 @@ if uploaded_files:
     df_filter_ptn = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN PERTANIAN'].copy()
     st.write("Filter PTN")
     st.write(df_filter_ptn)
+
+
+
+# PU
+desired_order = [
+    'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'CENTER', 'GROUP', 'PRODUK', 'JML.PINJAMAN','J.WAKTU', 'NAMA F.O.', 'PINJ.KE'
+    ]
+
+for col in desired_order:
+    if col not in df_filter_pu.columns:
+        df_filter_pu[col] = ''
+
+df_filter_pu = df_filter_pu[desired_order]
+
+def check_criteria(row):
+    if row['PRODUK'] == 'PINJAMAN UMUM':
+        if row['PINJ.KE'] == 1 and 1 <= row['JML.PINJAMAN'] <= 3000000:
+            return True
+        elif row['PINJ.KE'] == 2 and 1 <= row['JML.PINJAMAN'] <= 4000000:
+            return True
+        elif row['PINJ.KE'] == 3 and 1 <= row['JML.PINJAMAN'] <= 6000000:
+            return True
+        elif row['PINJ.KE'] == 4 and 1 <= row['JML.PINJAMAN'] <= 8000000:
+            return True
+        elif row['PINJ.KE'] == 5 and 1 <= row['JML.PINJAMAN'] <= 10000000:
+            return True
+        elif row['PINJ.KE'] >= 6 and 1 <= row['JML.PINJAMAN'] <= 12000000:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+# Apply the function to each row
+df_filter_pu['Criteria_Check'] = df_filter_pu.apply(check_criteria, axis=1)
+
+st.write("Anomali PU")
+st.write(df_filter_pu)
