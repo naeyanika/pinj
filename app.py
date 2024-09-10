@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import pyarrow as pa
 import io
 
 st.title('Aplikasi Filter Pinjaman Sanitasi dan Plafon Pinjaman Ke-')
@@ -164,7 +165,7 @@ def check_criteria(row):
 # Tambahkan Kolom Untuk Cek Kriteria
 df_filter_pu['CEK KRITERIA'] = df_filter_pu.apply(check_criteria, axis=1)
 
-st.write("Anomali PU")
+st.write("Anomali PU:")
 st.write(df_filter_pu)
 
 
@@ -233,7 +234,7 @@ for col in desired_order:
         df_filter_arta[col] = ''
 
 
-#Buat Kriteria DTP 
+#Buat Kriteria ARTA 
 def check_criteria(row):
     if row['PRODUK'] == 'PINJAMAN ARTA':
         if 100000 <= row['JML.PINJAMAN'] <= 5000000:
