@@ -247,3 +247,32 @@ df_filter_arta['CEK KRITERIA'] = df_filter_arta.apply(check_criteria, axis=1)
 
 st.write("Anomali ARTA:")
 st.write(df_filter_arta)
+
+#----------------------------------------- PERTANIAN --------------------------------#
+desired_order = [
+    'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'CENTER', 'GROUP', 'PRODUK', 'JML.PINJAMAN','J.WAKTU', 'NAMA F.O.', 'PINJ.KE', 'J.WAKTU', 'TUJUAN PINJAMAN'
+    ]
+
+for col in desired_order:
+    if col not in df_filter_ptn.columns:
+        df_filter_ptn[col] = ''
+
+
+#Buat Kriteria Pertanian 
+def check_criteria(row):
+    if 500000 <= row['JML.PINJAMAN'] <= 10000000:
+        if row['TUJUAN PINJAMAN'] == 'PERTANIAN PADI' and row['J.WAKTU'] == 25:
+            return True
+        elif row['TUJUAN PINJAMAN'] == 'PERTANIAN SAYURAN' and row['J.WAKTU'] == 16:
+            return True
+        elif row['TUJUAN PINJAMAN'] == 'PERTANIAN PALAWIJA' and row['J.WAKTU'] == 33:
+            return True
+        else:
+            return False
+    else:
+        return False
+    
+df_filter_arta['CEK KRITERIA'] = df_filter_arta.apply(check_criteria, axis=1)
+
+st.write("Anomali Pertanian:")
+st.write(df_filter_ptn)
