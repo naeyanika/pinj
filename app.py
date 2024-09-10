@@ -376,6 +376,19 @@ if uploaded_files:
     df_psa_merge['Pencairan Sanitasi x 1% Pensiun'] = df_psa_merge['JML.PINJAMAN'] * 0.01
     df_psa_merge['Pensiun Sesuai'] = df_psa_merge.apply(lambda row: row['Db Pensiun'] < row['Pencairan Sanitasi x 1% Pensiun'], axis=1)
 
+    desired_order = [
+         'NO.', 'ID', 'ID.PINJAMAN', 'NAMA LENGKAP', 'CENTER_df_S', 'GROUP', 'JML.PINJAMAN', 'SL', 'TRANS. DATE', 'CEK KRITERIA', 'Pencairan Sanitasi x 25%', 'Db Sukarela', 'Sukarela Sesuai', 'Pencairan Sanitasi x 1%', 'Db Wajib', 'Wajib Sesuai', 'Pencairan Sanitasi x 1% Pensiun', 'Db Pensiun', 'Pensiun Sesuai' 
+    ]
+    for col in desired_order:
+        if col not in df_psa_merge.columns:
+            df_psa_merge[col] = ''
+    df_psa_merge = df_psa_merge[desired_order]
+
+    rename_dict = {
+         'CENTER_df_S':'CENTER'    
+    }
+    df_psa_merge = df_psa_merge.rename(columns=rename_dict)
+    
     st.write("Anomali PSA:")
     st.write(df_psa_merge)
 
