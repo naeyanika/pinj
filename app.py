@@ -338,6 +338,47 @@ if uploaded_files:
     st.write("Anomali PRR:")
     st.write(df_prr_merge)
 
+#---------------------------------- SANITASI --------------------------------#
+    desired_order = [
+        'NO.','ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'CENTER', 'GROUP', 'PRODUK', 
+        'JML.PINJAMAN', 'J.WAKTU', 'TUJUAN PINJAMAN', 'NAMA F.O.'
+        ]
+
+    for col in desired_order:
+            if col not in df_filter_psa.columns:
+                df_filter_psa[col] = ''
+
+#---Buat Kriteria PSA 
+    def check_criteria(row):
+            if row['PRODUK'] == 'PINJAMAN SANITASI':
+                if 1000000 <= row['JML.PINJAMAN'] <= 30000000:
+                    return True
+                else:
+                    return False
+            else:
+                return False
+    
+    df_filter_psa['CEK KRITERIA'] = df_filter_psa.apply(check_criteria, axis=1)
+
+#---Merge df_s dan PSA
+    merge_column = 'DUMMY'
+    df_psa_merge = pd.merge(df_filter_psa, df_S, on=merge_column, suffixes=('_filter_PSA','_df_S'))
+
+    #Kriteria Nabung Sukarela 25%
+    df_psa_merge['Pencairan Sanitasi x 25%'] = df_psa_merge['JML.PINJAMAN'] * 0.25
+    df_psa_merge['Sukarela Sesuai'] = df_psa_merge.apply(lambda row: row['Db Sukarela'] >= row['Pencairan Sanitasi x 25%'], axis=1)
+
+    #Pengecekkan Wajib
+    df_psa_merge['Pencairan Sanitasi x 1%'] = df_psa_merge['JML.PINJAMAN'] * 0.01    
+    df_psa_merge['Wajib Sesuai'] = df_psa_merge.apply(lambda row: row['Db Wajib'] < row['Pencairan Sanitasi x 1%'], axis=1)
+
+    #Pengecekkan Pensiun
+    df_psa_merge['Pencairan Sanitasi x 1% Pensiun'] = df_psa_merge['JML.PINJAMAN'] * 0.01
+    df_psa_merge['Pensiun Sesuai'] = df_psa_merge.apply(lambda row: row['Db Pensiun'] < row['Pencairan Sanitasi x 1% Pensiun'], axis=1)
+
+    st.write("Anomali PSA:")
+    st.write(df_psa_merge)
+
 
 else:
     st.warning("Silakan upload file 'Pinjaman Detail Report.xlsx' dan 'pivot_simpanan.xlsx'")
