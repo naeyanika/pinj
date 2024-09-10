@@ -166,6 +166,17 @@ df_filter_pu['CEK KRITERIA'] = df_filter_pu.apply(check_criteria, axis=1)
 st.write("Anomali PU")
 st.write(df_filter_pu)
 
+#----------------------------------------- PMB ---------------------------------------#
+
+desired_order = [
+    'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'CENTER', 'GROUP', 'PRODUK', 'JML.PINJAMAN','J.WAKTU', 'NAMA F.O.', 'PINJ.KE'
+    ]
+
+for col in desired_order:
+    if col not in df_filter_pmb.columns:
+        df_filter_pmb[col] = ''
+
+df_filter_pmb = df_filter_pmb[desired_order]
 
 #Buat Kriteria PMB
 def check_criteria(row):
