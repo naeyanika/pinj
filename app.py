@@ -311,7 +311,6 @@ if uploaded_files:
     df_filter_prr['CEK KRITERIA'] = df_filter_prr.apply(check_criteria, axis=1)
 #---Merge df_S dan PRR
     merge_column = 'DUMMY'
-    # Kriteria Nabung 25% pada pencairan renovasi rumah.
     df_prr_merge = pd.merge(df_filter_prr, df_S, on=merge_column, suffixes=('_df_S','_df_filter_prr'))
     # Sukarela
     df_prr_merge['Pencairan Renovasi Rumah x 25%'] = df_prr_merge['JML.PINJAMAN'] * 0.25
