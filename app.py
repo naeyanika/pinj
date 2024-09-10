@@ -257,7 +257,6 @@ for col in desired_order:
     if col not in df_filter_ptn.columns:
         df_filter_ptn[col] = ''
 
-
 #Buat Kriteria Pertanian 
 def check_pertanian_criteria(row):
     if 500000 <= row['JML.PINJAMAN'] <= 10000000:
@@ -272,9 +271,10 @@ def check_pertanian_criteria(row):
     else:
         return False
 
-# Terapkan fungsi ini pada DataFrame
 df_filter_ptn['CEK KRITERIA'] = df_filter_ptn.apply(check_pertanian_criteria, axis=1)
 
-# Tampilkan hasil
+final_order = desired_order + ['CEK KRITERIA']
+df_filter_ptn = df_filter_ptn.reindex(columns=final_order)
+
 st.write("Anomali Pinjaman Pertanian")
 st.write(df_filter_ptn)
