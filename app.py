@@ -222,3 +222,28 @@ df_filter_ppd['CEK KRITERIA'] = df_filter_ppd.apply(check_criteria, axis=1)
 
 st.write("Anomali DTP:")
 st.write(df_filter_ppd)
+
+#----------------------------------------- ARTA --------------------------------#
+desired_order = [
+    'NO.', 'ID', 'ID.PINJAMAN', 'DUMMY', 'NAMA LENGKAP', 'CENTER', 'GROUP', 'PRODUK', 'JML.PINJAMAN','J.WAKTU', 'NAMA F.O.', 'PINJ.KE'
+    ]
+
+for col in desired_order:
+    if col not in df_filter_arta.columns:
+        df_filter_arta[col] = ''
+
+
+#Buat Kriteria DTP 
+def check_criteria(row):
+    if row['PRODUK'] == 'PINJAMAN ARTA':
+        if 100000 <= row['JML.PINJAMAN'] <= 5000000:
+            return True
+        else:
+            return False
+    else:
+        return False
+    
+df_filter_arta['CEK KRITERIA'] = df_filter_arta.apply(check_criteria, axis=1)
+
+st.write("Anomali ARTA:")
+st.write(df_filter_arta)
