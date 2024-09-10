@@ -329,8 +329,6 @@ if uploaded_files:
     for col in desired_order:
         if col not in df_prr_merge.columns:
             df_prr_merge[col] = ''
-
-    result = result[desired_order]
     
     rename_dict = {
          'CENTER_df_S':'CENTER'    
