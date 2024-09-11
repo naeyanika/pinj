@@ -9,6 +9,7 @@ st.write("""1. File yang dibutuhkan: Daftar Pinjaman dan pivot_simpanan.xlsx""")
 st.write("""2. Ubah Nama File jadi Pinjaman Detail Report, dan untuk pivot_simpanan tidak udah diubah namanya""")
 st.write("""3. Rapihkan data tersebut jadi seperti contoh ini: https://drive.google.com/file/d/14Ofz53dSVRFzlFrrc8snZmmkHq7CO-R2/view?usp=drive_link""")
 st.write("""4. Hapus karakter spesial terlebih dahulu pada file excel nya, lengkapnya ada disini tutorialnya : https://drive.google.com/file/d/1xABUwrMatieKFsNeUbOWl2KuDh6BVLwy/view?usp=drive_link """)
+
 ## FUNGSI FORMAT NOMOR
 def format_no(no):
     try:
@@ -42,6 +43,10 @@ uploaded_files = st.file_uploader("Upload files", accept_multiple_files=True, ty
 
 df_PDR = None
 df_S = None
+
+@st.cache_data
+def load_excel(file):
+    return pd.read_excel(file, engine='openpyxl')
 
 if uploaded_files:
     for file in uploaded_files:
@@ -89,26 +94,30 @@ if uploaded_files:
     st.write("Transaksi Simpanan:")
     st.write(df_S)
 #------------------ Proses Filter
-    # Filter PU
-    df_filter_pu = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN UMUM'].copy()
+    @st.cache_data
+    def filter_data(df, product):
+        return df[df['PRODUK'] == product].copy()
 
-    # Filter PMB
-    df_filter_pmb = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN MIKROBISNIS'].copy()
+# Filter PU
+    df_filter_pu = filter_data(df_PDR, 'PINJAMAN UMUM')
 
-    # Filter PPD
-    df_filter_ppd = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN DT. PENDIDIKAN'].copy()
+# Filter PMB
+    df_filter_pmb = filter_data(df_PDR, 'PINJAMAN MIKROBISNIS')
 
-    # Filter PSA
-    df_filter_psa = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN SANITASI'].copy()
+# Filter PPD
+    df_filter_ppd = filter_data(df_PDR, 'PINJAMAN DT. PENDIDIKAN')
 
-    # Filter ARTA
-    df_filter_arta = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN ARTA'].copy()
+# Filter PSA
+    df_filter_psa = filter_data(df_PDR, 'PINJAMAN SANITASI')
 
-    # Filter PRR
-    df_filter_prr = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN RENOVASI RUMAH'].copy()
+# Filter ARTA
+    df_filter_arta = filter_data(df_PDR, 'PINJAMAN ARTA')
 
-    # Filter PTN
-    df_filter_ptn = df_PDR[df_PDR['PRODUK'] == 'PINJAMAN PERTANIAN'].copy()
+# Filter PRR
+    df_filter_prr = filter_data(df_PDR, 'PINJAMAN RENOVASI RUMAH')
+
+# Filter PTN
+    df_filter_ptn = filter_data(df_PDR, 'PINJAMAN PERTANIAN')
 
 #----------------- ANOMALI
 
