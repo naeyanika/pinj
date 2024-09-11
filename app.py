@@ -147,7 +147,7 @@ if uploaded_files:
 # Tambahkan Kolom Untuk Cek Kriteria
     df_filter_pu['CEK KRITERIA'] = df_filter_pu.apply(check_criteria, axis=1)
 
-    st.write("Anomali PU: Anomali ini berdasarkan kriteria dari pinjaman ke- dan jumlah pinjamannya (SOP Operasional versi 4 Hal.135)")
+    st.write("Anomali PU: Anomali ini didasarkan pada kriteria dari pinjaman ke- dan jumlah pinjamannya (SOP Operasional versi 4, hlm. 135).")
     st.write(df_filter_pu)
 
 
@@ -178,7 +178,7 @@ if uploaded_files:
 
     df_filter_pmb['CEK KRITERIA'] = df_filter_pmb.apply(check_criteria, axis=1)
 
-    st.write("Anomali PMB: Anomali ini berdasarkan kriteria dari pinjaman ke- anggota dan jumlah pinjamannya (SOP Operasional versi 4 Hal.143)")
+    st.write("Anomali PMB: Anomali ini didasarkan pada kriteria dari pinjaman ke- anggota dan jumlah pinjamannya (SOP Operasional versi 4, hlm. 143).")
     st.write(df_filter_pmb)
 
 #--------------------------------------- PPD --------------------------------------#
@@ -205,7 +205,7 @@ if uploaded_files:
     
     df_filter_ppd['CEK KRITERIA'] = df_filter_ppd.apply(check_criteria, axis=1)
 
-    st.write("Anomali DTP: Anomali ini berdasarkan kriteria jumlah minimal dan maksimal plafon Pinjaman DT. Pendidikan anggota (SOP Operasional versi 4 Hal.151)")
+    st.write("Anomali DTP: Anomali ini didasarkan pada kriteria jumlah minimal dan maksimal plafon Pinjaman DT Pendidikan anggota (SOP Operasional versi 4, hlm. 151).")
     st.write(df_filter_ppd)
 
 #----------------------------------------- ARTA --------------------------------#
@@ -231,7 +231,7 @@ if uploaded_files:
     
     df_filter_arta['CEK KRITERIA'] = df_filter_arta.apply(check_criteria, axis=1)
 
-    st.write("Anomali ARTA: Anomali ini berdasarkan kriteria jumlah minimal dan maksimal plafon Pinjaman Arta anggota (SOP Operasional versi 4 Hal.171)")
+    st.write("Anomali ARTA: Anomali ini didasarkan pada kriteria jumlah minimal dan maksimal plafon Pinjaman Arta anggota (SOP Operasional versi 4, hlm. 171).")
     st.write(df_filter_arta)
 
 #----------------------------------------- PERTANIAN --------------------------------#
@@ -274,7 +274,7 @@ if uploaded_files:
     final_order = desired_order + ['KRITERIA DISBURSE', 'KRITERIA J.WAKTU', 'SEMUA KRITERIA TERPENUHI']
     df_filter_ptn = df_filter_ptn.reindex(columns=final_order)
 
-    st.write("Anomali PTN: Anomali ini berdasarkan kriteria jumlah minimal dan maksimal plafon Pinjaman Pertanian dan kriteria Jangka Waktu berdasarkan Tujuan Pinjamannya (SOP Operasional versi 4 Hal.191)")
+    st.write("Anomali PTN: Anomali ini didasarkan pada kriteria jumlah minimal dan maksimal plafon Pinjaman Pertanian serta kriteria jangka waktu berdasarkan tujuan pinjamannya (SOP Operasional versi 4, hlm. 191).")
     st.write(df_filter_ptn)
 
 #---------------------- PRR -----------------------#
@@ -315,7 +315,7 @@ if uploaded_files:
     }
     df_prr_merge = df_prr_merge.rename(columns=rename_dict)
 
-    st.write("Anomali PRR: Anomali ini berdasarkan kriteria jumlah minimal dan maksimal plafon pinjaman (SOP Operasional versi 4 Hal.181), dan '25%' dana pinjaman dimasukan ke simpanan sukarela anggota' (SOP Operasional versi 4 Hal.179 bagian C tentang pinjaman RR poin iii)")
+    st.write("Anomali PRR: Anomali ini didasarkan pada kriteria jumlah minimal dan maksimal plafon pinjaman (SOP Operasional versi 4, hlm. 181), dan '25%, dana pinjaman dimasukkan ke simpanan sukarela anggota' (SOP Operasional versi 4, hlm. 179, bagian C tentang Pinjaman RR, poin iii).")
     st.write(df_prr_merge)
 
 #---------------------------------- SANITASI --------------------------------#
@@ -364,7 +364,7 @@ if uploaded_files:
     }
     df_psa_merge = df_psa_merge.rename(columns=rename_dict)
 
-    st.write("Anomali PSA: Anomali ini berdasarkan kriteria jumlah minimal dan maksimal plafon pinjaman (SOP Operasional versi 4 Hal.159), dan '25%, dari total pencairan pinjaman dimasukkan ke rekening simpanan sukarela' (SOP Operasional versi 4 Hal.160 bagian 'D.INFORMASI PRODUK' poin simpanan)")
+    st.write("Anomali PSA: Anomali ini didasarkan pada kriteria jumlah minimal dan maksimal plafon pinjaman (SOP Operasional versi 4, hlm. 159), dan '25%, dari total pencairan pinjaman dimasukkan ke rekening simpanan sukarela' (SOP Operasional versi 4, hlm. 160, bagian D: Informasi Produk, poin Simpanan).")
     st.write(df_psa_merge)
 
 #---------- Download links for all files
