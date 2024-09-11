@@ -364,7 +364,7 @@ if uploaded_files:
     }
     df_psa_merge = df_psa_merge.rename(columns=rename_dict)
 
-    st.write("Anomali PSA: Anomali ini berdasarkan kriteria jumlah minimal dan maksimal plafon pinjaman (SOP Operasional versi 4 Hal.159), dan '25%, dari total pencairan pinjaman dimasukkan ke rekening simpanan sukarela' (SOP Operasional versi 4 Hal.160 bagian 'D.INFORMASI PRODUK' poin simpanan")
+    st.write("Anomali PSA: Anomali ini berdasarkan kriteria jumlah minimal dan maksimal plafon pinjaman (SOP Operasional versi 4 Hal.159), dan '25%, dari total pencairan pinjaman dimasukkan ke rekening simpanan sukarela' (SOP Operasional versi 4 Hal.160 bagian 'D.INFORMASI PRODUK' poin simpanan)")
     st.write(df_psa_merge)
 
 #---------- Download links for all files
