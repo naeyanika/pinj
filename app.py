@@ -4,12 +4,11 @@ import numpy as np
 import pyarrow as pa
 import io
 
-st.title('Aplikasi Filter Pinjaman Sanitasi dan Plafon Pinjaman Ke-')
-st.write("""File yang dibutuhkan: Daftar Pinjaman dan pivot_simpanan.xlsx""")
-st.write("""Ubah Nama File dan nama Sheet jadi Pinjaman Detail Report""")
-st.write("""Rapihkan data tersebut jadi seperti contoh ini: https://drive.google.com/file/d/14Ofz53dSVRFzlFrrc8snZmmkHq7CO-R2/view?usp=drive_link""")
-st.write("""Hapus karakter spesial terlebih dahulu pada file excel nya, lengkapnya ada disini tutorialnya : https://drive.google.com/file/d/1xABUwrMatieKFsNeUbOWl2KuDh6BVLwy/view?usp=drive_link """)
-
+st.title('Anomali pinjaman berdasarkan beberapa kriteria')
+st.write("""1. File yang dibutuhkan: Daftar Pinjaman dan pivot_simpanan.xlsx""")
+st.write("""2. Ubah Nama File jadi Pinjaman Detail Report, dan untuk pivot_simpanan tidak udah diubah namanya""")
+st.write("""3. Rapihkan data tersebut jadi seperti contoh ini: https://drive.google.com/file/d/14Ofz53dSVRFzlFrrc8snZmmkHq7CO-R2/view?usp=drive_link""")
+st.write("""4. Hapus karakter spesial terlebih dahulu pada file excel nya, lengkapnya ada disini tutorialnya : https://drive.google.com/file/d/1xABUwrMatieKFsNeUbOWl2KuDh6BVLwy/view?usp=drive_link """)
 ## FUNGSI FORMAT NOMOR
 def format_no(no):
     try:
