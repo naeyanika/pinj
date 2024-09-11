@@ -390,7 +390,7 @@ if uploaded_files:
     buffer.seek(0)
 
     st.download_button(
-        label="Download Anomali",
+        label="📥 Download Anomali",
         data=buffer.getvalue(),
         file_name='Anomali Pinjaman.xlsx',
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
